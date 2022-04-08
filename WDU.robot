@@ -4,7 +4,7 @@ Library  Autosphere.HTTP
 Library  Autosphere.Excel.Files
 Library  Autosphere.PDF
 Library  Autosphere.FileSystem
-Library  pabot.PabotLib
+Library  Autosphere.Cryptos
 
 *** Keywords ***
 Download The Excel file
@@ -17,8 +17,12 @@ Open The Internet Website
 
 *** Keywords ***
 Log In
-    Input Text    id=username  developer
-    Input password   id=password  autosphere
+    ${USER}=  Get Asset  username  ${username}
+    ${PASS}=  Get Asset  password  ${password}
+    Log  ${USER}
+    Log  ${PASS}
+    Input Text    id=username  ${USER}
+    Input password   id=password  ${PASS}
     Submit Form
         Wait until page contains element  id=firstname
 
@@ -45,17 +49,17 @@ Fill and Submit the form for a user
 
 *** Keywords ***
 Taking screenshot of the results
-    Capture element screenshot  css:div.sales-summary     C:/Users/Kamran/Documents/workspace/Weekly-Data-Update/Result/test.png
+    Capture element screenshot  css:div.sales-summary     C:/Users/Kamran/Documents/workspace/Weekly-Data-Update/Results/test.png
 
 *** Keywords ***
 Export the table as HTML
     Wait Until Element Is Visible    id:sales-results
     ${sales_results_html}=    Get Element Attribute  id:sales-results   outerHTML
-    Create File    ./Result/sales_results.template    ${sales_results_html}    overwrite=True
+    Create File    ./Results/sales_results.template    ${sales_results_html}    overwrite=True
 
 *** Keywords ***
 Convert HTML to PDF
-  Template Html To Pdf    ./Result/sales_results.template    ./Result/sales_results.pdf
+  Template Html To Pdf    ./Results/sales_results.template    ./Results/sales_results.pdf
 
 *** Keywords ***
 Log Out And Close The Browser
@@ -77,12 +81,3 @@ Creating PDF of the results
     Convert HTML to PDF
 
     [Teardown]  Log Out And Close The Browser
-
-    
-    
-
-
-
-
-
-
